@@ -58,7 +58,7 @@ to `True`.
         exp = datetime.datetime.utcnow() + app.config['JWT_EXPIRATION_DELTA']
         return {
             'account_id': account.id,
-            'exp': exp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            'exp': exp.strftime(app.config['JSON_DATETIME_FORMAT'])
         }
 
     @bouncer.authorization_method

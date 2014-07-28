@@ -3,6 +3,7 @@ import importlib
 
 from flask import Blueprint
 from flask.json import JSONEncoder as BaseJSONEncoder
+from .settings import JSON_DATETIME_FORMAT
 
 
 def register_blueprints(app, package_name, package_path):
@@ -32,7 +33,7 @@ class JSONEncoder(BaseJSONEncoder):
         if obj is None:
             return '{}'
         if hasattr(obj, 'isoformat'):
-            return obj.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            return obj.strftime(JSON_DATETIME_FORMAT)
         if hasattr(obj, 'to_json'):
             return obj.to_json()
         return super(JSONEncoder, self).default(obj)

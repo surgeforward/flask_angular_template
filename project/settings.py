@@ -13,3 +13,5 @@ MAIL_PORT = 25
 MAIL_USE_TLS = True
 MAIL_USERNAME = 'username'
 MAIL_PASSWORD = 'password'
+
+JSON_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
