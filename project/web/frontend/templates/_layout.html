@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    {% assets "css_all" -%}
+      <link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+
+    {% assets "js_vendor" -%}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% assets "js_main" -%}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% block js %}{% endblock %}
+</body>
+</html>
