@@ -1,4 +1,4 @@
-from ...core import Service
+from ...core import  Service
 from .models import Account, Role
 
 
@@ -7,3 +7,4 @@ class AccountsService(Service):
 
 class RolesService(Service):
     __model__ = Role
+

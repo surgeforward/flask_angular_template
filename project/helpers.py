@@ -29,9 +29,11 @@ class JSONEncoder(BaseJSONEncoder):
 :class:`JsonSerializer` mixin.
 """
     def default(self, obj):
+        if obj is None:
+            return '{}'
         if hasattr(obj, 'isoformat'):
             return obj.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        if isinstance(obj, JsonSerializer):
+        if hasattr(obj, 'to_json'):
             return obj.to_json()
         return super(JSONEncoder, self).default(obj)
 

@@ -1,6 +1,7 @@
 from functools import wraps
 
 from flask import jsonify
+from flask_jwt import jwt_required
 
 from ...core import ApplicationError, ApplicationFormError
 from ...helpers import JSONEncoder
@@ -28,6 +29,7 @@ def route(bp, *args, **kwargs):
 
     def decorator(f):
         @bp.route(*args, **kwargs)
+        @jwt_required()
         @wraps(f)
         def wrapper(*args, **kwargs):
             status_code = 200

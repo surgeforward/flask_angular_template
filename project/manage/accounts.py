@@ -17,9 +17,9 @@ def account_create():
     data = MultiDict(dict(email=email, password=password, password_confirm=password_confirm))
     form = RegisterForm(data, csrf_enabled=False)
     if form.validate():
-        user = service.create(email=email, password=password)
+        account = service.create(email=email, password=password)
         print('\nUser created successfully')
-        print('User(id=%s email=%s)' % (user.id, user.email))
+        print('User(id=%s email=%s)' % (account.id, account.email))
         return
     print('\nError creating user:')
     for errors in form.errors.values():

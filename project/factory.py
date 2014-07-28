@@ -55,9 +55,10 @@ to `True`.
 
     @jwt.payload_handler
     def make_payload(account):
+        exp = datetime.datetime.utcnow() + app.config['JWT_EXPIRATION_DELTA']
         return {
             'account_id': account.id,
-            'exp': datetime.utcnow() + app.config['JWT_EXPIRATION_DELTA']
+            'exp': exp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         }
 
     @bouncer.authorization_method

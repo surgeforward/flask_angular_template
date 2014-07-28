@@ -4,9 +4,8 @@ import click
 from alembic import command
 from alembic.config import Config
 
-
-@click.group()
-def db():
+@click.group(name='db')
+def database():
     pass
 
 
@@ -16,21 +15,21 @@ def _get_config():
     return config
 
 
-@db.command()
+@database.command()
 def init():
     "Generates a new migration"
     config = _get_config()
     command.init(config, 'migrations', 'alembic')
 
 
-@db.command()
+@database.command()
 def current():
     "Display the current revision for each database."
     config = _get_config()
     command.current(config)
 
 
-@db.command()
+@database.command()
 @click.option('-r', '--rev-range', default=None, help="Specify a revision range; format is [start]:[end]")
 def history(rev_range=None):
     "List changeset scripts in chronological order."
@@ -38,7 +37,7 @@ def history(rev_range=None):
     command.history(config, rev_range)
 
 
-@db.command()
+@database.command()
 @click.option('--sql', default=False, help="Don't emit SQL to database - dump to standard output instead")
 @click.option('--autogenerate', default=False,
               help="Populate revision script with andidate migration operatons, based on comparison of database to model")
@@ -49,7 +48,7 @@ def revision(message=None, autogenerate=False, sql=False):
     command.revision(config, message, autogenerate=autogenerate, sql=sql)
 
 
-@db.command()
+@database.command()
 @click.option('--sql', default=False, help="Don't emit SQL to database - dump to standard output instead")
 @click.option('-m', '--message', default=None)
 def migrate(message=None, sql=False):
@@ -58,7 +57,7 @@ def migrate(message=None, sql=False):
     command.revision(config, message, autogenerate=True, sql=sql)
 
 
-@db.command()
+@database.command()
 @click.option('--tag', default=None, help="Arbitrary 'tag' name - can be used by custom env.py scripts")
 @click.option('--sql', default=False, help="Don't emit SQL to database - dump to standard output instead")
 @click.option('revision', help="revision identifier")
@@ -68,7 +67,7 @@ def stamp(revision='head', sql=False, tag=None):
     command.stamp(config, revision, sql=sql, tag=tag)
 
 
-@db.command()
+@database.command()
 @click.option('--tag', default=None, help="Arbitrary 'tag' name - can be used by custom env.py scripts")
 @click.option('--sql', default=False, help="Don't emit SQL to database - dump to standard output instead")
 @click.option('--revision', default='head', help="revision identifier")
@@ -78,7 +77,7 @@ def upgrade(revision='head', sql=False, tag=None):
     command.upgrade(config, revision, sql=sql, tag=tag)
 
 
-@db.command()
+@database.command()
 @click.option('--tag', default=None, help="Arbitrary 'tag' name - can be used by custom env.py scripts")
 @click.option('--sql', default=False, help="Don't emit SQL to database - dump to standard output instead")
 @click.option('revision', nargs='?', default="-1", help="revision identifier")
@@ -88,14 +87,14 @@ def downgrade(revision='-1', sql=False, tag=None):
     command.downgrade(config, revision, sql=sql, tag=tag)
 
 
-@db.command()
+@database.command()
 def branches():
     "Lists revisions that have broken the source tree into two versions representing two independent sets of changes"
     config = _get_config()
     command.branches(config)
 
 
-@db.command()
+@database.command()
 def seed():
     "Seeds the database"
     seed_roles()
@@ -109,5 +108,4 @@ def seed_roles():
 
 def seed_accounts():
     if not accounts.first(email='admin@example.com'):
-        accounts.create(email='admin@example.com', password=bcrypt.hashpw(b'admin', bcrypt.gensalt()),
-                        roles=[roles.first(name='Admin')])
+        account = accounts.create(email='admin@example.com', password=bcrypt.hashpw(b'admin', bcrypt.gensalt()))
