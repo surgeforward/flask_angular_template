@@ -1,4 +1,3 @@
-from .accounts import AccountsService, RolesService
+from .accounts import AccountsService
 
 accounts = AccountsService()
-roles = RolesService()

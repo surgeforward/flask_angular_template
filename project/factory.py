@@ -63,7 +63,11 @@ to `True`.
 
     @bouncer.authorization_method
     def define_authorization(user, they):
-        they.can(READ, ('Account', 'Role'))
+        if user.is_admin:
+            they.can(MANAGE, ALL)
+        else:
+            they.can(READ, 'Account')
+            they.can(EDIT, 'Account', lambda a: a.id == user.id)
 
 
     register_blueprints(app, package_name, package_path)

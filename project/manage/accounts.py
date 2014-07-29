@@ -28,14 +28,13 @@ def account_create():
 
 @accounts.command(name='delete')
 def account_delete():
-    def run(self):
-        email = click.prompt('Email')
-        user = service.first(email=email)
-        if not user:
-            print('Invalid user')
-            return
-        service.delete(user)
-        print('User deleted successfully')
+    email = click.prompt('Email')
+    user = service.first(email=email)
+    if not user:
+        print('Invalid user')
+        return
+    service.delete(user)
+    print('User deleted successfully')
 
 
 @accounts.command(name='list')

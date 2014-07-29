@@ -1,22 +1,17 @@
 from flask_wtf import Form
-from wtforms import TextField, PasswordField
-from wtforms.validators import Required, Email, EqualTo
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, Email, EqualTo
 
-__all__ = ['RegisterForm', 'LoginForm', 'RoleForm']
+__all__ = ['RegisterForm', 'LoginForm']
 
 
 class RegisterForm(Form):
-    email = TextField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required()])
-    confirm_password = PasswordField('Confirm Password', validators=[Required(), EqualTo('password')])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
 
 class LoginForm(Form):
-    email = TextField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required()])
-
-
-class RoleForm(Form):
-    name = TextField('Name', validators=[Required(), Email()])
-    description = TextField('Description', validators=[Required()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
 

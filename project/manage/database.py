@@ -1,4 +1,4 @@
-from ..resources.services import accounts, roles
+from ..resources.services import accounts
 import bcrypt
 import click
 from alembic import command
@@ -97,15 +97,9 @@ def branches():
 @database.command()
 def seed():
     "Seeds the database"
-    seed_roles()
     seed_accounts()
 
 
-def seed_roles():
-    if not roles.first(name='Admin'):
-        roles.create(name='Admin', description='Admin')
-
-
 def seed_accounts():
-    if not accounts.first(email='admin@example.com'):
-        account = accounts.create(email='admin@example.com', password=bcrypt.hashpw(b'admin', bcrypt.gensalt()))
+    if accounts.first(email='admin@example.com') is None:
+        accounts.create(email='admin@example.com', password=bcrypt.hashpw(b'admin', bcrypt.gensalt()), is_admin=True)
