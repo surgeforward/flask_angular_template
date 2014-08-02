@@ -18,7 +18,9 @@ js_vendor = Bundle("js/vendor/jquery-2.1.1.min.js",
 
 #: application js bundle
 js_main = Bundle("js/app/app.js",
-                 "js/app/main/*.js",
+                 "js/app/services/*.js",
+                 "js/app/login/*.js",
+                 "js/app/profile/*.js",
                  filters="jsmin", output="js/app.min.js")
 
 
