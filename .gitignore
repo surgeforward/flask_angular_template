@@ -22,3 +22,4 @@ Berksfile.lock
 .webassets-cache
 instance
 settings.cfg
+app.css
