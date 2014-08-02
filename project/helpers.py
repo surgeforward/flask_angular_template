@@ -4,6 +4,15 @@ import importlib
 from flask import Blueprint
 from flask.json import JSONEncoder as BaseJSONEncoder
 from .settings import JSON_DATETIME_FORMAT
+import bcrypt
+
+
+def encrypt_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+def check_password(password, pw_hash):
+    return bcrypt.hashpw(password.encode('utf-8'), pw_hash.encode('utf-8')) == pw_hash
 
 
 def register_blueprints(app, package_name, package_path):

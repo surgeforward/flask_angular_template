@@ -3,6 +3,7 @@ from werkzeug.datastructures import MultiDict
 
 from ..resources.services import accounts as service
 from ..resources.forms import RegisterForm
+from ..helpers import encrypt_password
 
 @click.group()
 def accounts():
@@ -17,7 +18,7 @@ def account_create():
     data = MultiDict(dict(email=email, password=password, password_confirm=password_confirm))
     form = RegisterForm(data, csrf_enabled=False)
     if form.validate():
-        account = service.create(email=email, password=password)
+        account = service.create(email=email, password=encrypt_password(password))
         print('\nUser created successfully')
         print('User(id=%s email=%s)' % (account.id, account.email))
         return

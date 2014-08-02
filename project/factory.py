@@ -2,28 +2,26 @@ import os
 
 from celery import Celery
 from flask import Flask
-
+from flask_jwt import current_user
 from .core import db, mail, jwt, bouncer
 from bouncer.constants import *
-from .helpers import register_blueprints
+from .helpers import register_blueprints, check_password
 from .web.middleware import HTTPMethodOverrideMiddleware
 from .resources.services import accounts
-import bcrypt
 import datetime
 
 
-def create_app(package_name, package_path, settings_override=None,
-               register_security_blueprint=True):
+def create_app(package_name, package_path, settings_override=None, register_security_blueprint=True):
     """Returns a :class:`Flask` application instance configured with common
-functionality for the application.
+    functionality for the application.
 
-:param package_name: application package name
-:param package_path: application package path
-:param settings_override: a dictionary of settings to override
-:param register_security_blueprint: flag to specify if the Flask-Security
-Blueprint should be registered. Defaults
-to `True`.
-"""
+    :param package_name: application package name
+    :param package_path: application package path
+    :param settings_override: a dictionary of settings to override
+    :param register_security_blueprint: flag to specify if the Flask-Security
+    Blueprint should be registered. Defaults
+    to `True`.
+    """
     app = Flask(package_name, instance_relative_config=True)
 
     app.config.from_object('project.settings')
@@ -42,7 +40,7 @@ to `True`.
         if not account:
             return None
 
-        if bcrypt.hashpw(password.encode('utf-8'), account.password.encode('utf-8')) != account.password:
+        if not check_password(password, account.password):
             return None
 
         return account
@@ -69,6 +67,9 @@ to `True`.
             they.can(READ, 'Account')
             they.can(EDIT, 'Account', lambda a: a.id == user.id)
 
+    @bouncer.user_loader
+    def get_current_user():
+        return current_user
 
     register_blueprints(app, package_name, package_path)
 

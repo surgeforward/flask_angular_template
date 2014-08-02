@@ -1,5 +1,5 @@
 from ..resources.services import accounts
-import bcrypt
+from ..helpers import encrypt_password
 import click
 from alembic import command
 from alembic.config import Config
@@ -102,4 +102,4 @@ def seed():
 
 def seed_accounts():
     if accounts.first(email='admin@example.com') is None:
-        accounts.create(email='admin@example.com', password=bcrypt.hashpw(b'admin', bcrypt.gensalt()), is_admin=True)
+        accounts.create(email='admin@example.com', password=encrypt_password('admin'), is_admin=True)
